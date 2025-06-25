@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "485397222127",
+    "project_id": "my-app-skin-disease-diagnose",
+    "storage_bucket": "my-app-skin-disease-diagnose.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485397222127:android:9ac49708a8d53f62b6811a",
+        "android_client_info": {
+          "package_name": "com.example.diagnosis_penyakit_infeksi_jamur_kulit_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVCmv2j_TKDp4mJ1PANFko87v1xlRNaG0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
