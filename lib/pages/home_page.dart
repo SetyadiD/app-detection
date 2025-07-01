@@ -145,7 +145,11 @@ class HomePage extends StatelessWidget {
                   child: const Column(
                     children: [
                       Text(
+<<<<<<< HEAD
                         'Aplikasi Diagnosis Kulit',
+=======
+                        'Aplikasi Deteksi Penyakit Kulit',
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -155,7 +159,11 @@ class HomePage extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       Text(
+<<<<<<< HEAD
                         'Diagnosis dini masalah kesehatan kulit Anda. Dapatkan diagnosis secara cepat untuk beberapa kondisi kulit.',
+=======
+                        'Deteksi dini masalah kesehatan kulit Anda. Dapatkan deteksi secara cepat untuk beberapa kondisi kulit.',
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
                         style: TextStyle(
                           fontSize: 16,
                           color: Color(0xFF424242),
@@ -197,7 +205,11 @@ class HomePage extends StatelessWidget {
                           SizedBox(width: 10),
                           Expanded(
                             child: Text(
+<<<<<<< HEAD
                               'Penyakit yang Dapat Didiagnosis:',
+=======
+                              'Penyakit yang Dapat Dideteksi:',
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,

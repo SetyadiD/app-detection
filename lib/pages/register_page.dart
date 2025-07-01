@@ -175,7 +175,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 10),
                   
                   const Text(
+<<<<<<< HEAD
                     'Buat akun baru untuk menggunakan layanan diagnosis kulit',
+=======
+                    'Buat akun baru untuk menggunakan layanan deteksi penyakit kulit',
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.white70,
@@ -495,7 +499,11 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         SizedBox(height: 8),
                         Text(
+<<<<<<< HEAD
                           'Dengan mendaftar, Anda menyetujui syarat dan ketentuan aplikasi diagnosis kulit',
+=======
+                          'Dengan mendaftar, Anda menyetujui syarat dan ketentuan aplikasi deteksi penyakit kulit',
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
                           style: TextStyle(
                             fontSize: 12,
                             color: Color(0xFF888888),

@@ -76,7 +76,11 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
             ],
           ),
           content: const Text(
+<<<<<<< HEAD
             'Apakah Anda yakin ingin menghapus riwayat diagnosis ini? Tindakan ini tidak dapat dibatalkan.',
+=======
+            'Apakah Anda yakin ingin menghapus riwayat deteksi ini? Tindakan ini tidak dapat dibatalkan.',
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
             style: TextStyle(
               fontSize: 15,
               height: 1.4,
@@ -241,7 +245,11 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
             ),
             const SizedBox(height: 8),
             Text(
+<<<<<<< HEAD
               'Riwayat diagnosis Anda akan muncul di sini\nsetelah melakukan diagnosis pertama',
+=======
+              'Riwayat deteksi Anda akan muncul di sini\nsetelah melakukan diagnosis pertama',
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
@@ -313,7 +321,11 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
           ),
           const SizedBox(height: 8),
           Text(
+<<<<<<< HEAD
             'Gagal memuat riwayat diagnosis.\nSilakan coba lagi nanti.',
+=======
+            'Gagal memuat riwayat deteksi.\nSilakan coba lagi nanti.',
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,
@@ -482,7 +494,11 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
+<<<<<<< HEAD
                                     'Diagnosis Utama',
+=======
+                                    'Deteksi Utama',
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey.shade600,
@@ -657,7 +673,11 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                 Icon(Icons.history, color: Colors.white),
                 SizedBox(width: 8),
                 Text(
+<<<<<<< HEAD
                   'Riwayat Diagnosis',
+=======
+                  'Riwayat Deteksi',
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
@@ -698,7 +718,11 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
             Icon(Icons.history_rounded, color: Colors.white),
             SizedBox(width: 8),
             Text(
+<<<<<<< HEAD
               'Riwayat Diagnosis',
+=======
+              'Riwayat Deteksi',
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,

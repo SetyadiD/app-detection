@@ -1,6 +1,10 @@
 // ignore_for_file: unused_catch_clause
 
 import 'package:firebase_auth/firebase_auth.dart';
+<<<<<<< HEAD
+=======
+import 'package:google_sign_in/google_sign_in.dart';
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
 
 class LoginService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -24,5 +28,32 @@ class LoginService {
 
   Future<void> logout() async {
     await _auth.signOut();
+<<<<<<< HEAD
+=======
+    await GoogleSignIn().signOut(); // Logout juga dari Google
+  }
+
+  Future<UserCredential> loginWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        throw Exception('Login dengan Google dibatalkan oleh pengguna.');
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      return await _auth.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      rethrow;
+    } catch (e) {
+      throw Exception('Login dengan Google gagal: ${e.toString()}');
+    }
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
   }
 }

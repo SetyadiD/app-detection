@@ -131,6 +131,167 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+<<<<<<< HEAD
+=======
+  void _sendPasswordResetEmail() async {
+    try {
+      if (user?.email == null) {
+        _showSnackBar('Email pengguna tidak ditemukan', Colors.red);
+        return;
+      }
+
+      // Kirim email reset password
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: user!.email!);
+      
+      _showSnackBar(
+        'Email reset password telah dikirim ke ${user!.email}. Silakan cek inbox atau spam folder Anda.',
+        Colors.green,
+      );
+      
+      // Tampilkan dialog konfirmasi
+      _showPasswordResetDialog();
+      
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      switch (e.code) {
+        case 'user-not-found':
+          errorMessage = 'Email tidak terdaftar';
+          break;
+        case 'invalid-email':
+          errorMessage = 'Format email tidak valid';
+          break;
+        case 'too-many-requests':
+          errorMessage = 'Terlalu banyak permintaan. Coba lagi nanti';
+          break;
+        default:
+          errorMessage = 'Gagal mengirim email reset: ${e.message}';
+      }
+      _showSnackBar(errorMessage, Colors.red);
+    } catch (e) {
+      _showSnackBar('Gagal mengirim email reset: $e', Colors.red);
+    }
+  }
+
+  void _showPasswordResetDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.green.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.email_outlined,
+                  color: Colors.green,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 12),
+              const Text(
+                'Email Terkirim',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Email reset password telah dikirim ke:',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600],
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.blue.withOpacity(0.2)),
+                ),
+                child: Text(
+                  user!.email!,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Silakan cek inbox atau spam folder email Anda dan ikuti petunjuk untuk mereset password.',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[700],
+                ),
+              ),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.orange.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.orange.withOpacity(0.2)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.info_outline,
+                      color: Colors.orange,
+                      size: 18,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Setelah mereset password, Anda perlu login ulang.',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.orange[700],
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Mengerti',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.blue,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
   void _showSnackBar(String message, Color backgroundColor) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -138,6 +299,10 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: backgroundColor,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+<<<<<<< HEAD
+=======
+        duration: const Duration(seconds: 4),
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
       ),
     );
   }
@@ -559,6 +724,35 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               ),
                             ),
+<<<<<<< HEAD
+=======
+                            
+                            const SizedBox(height: 12),
+                            
+                            // Forgot Password Button
+                            SizedBox(
+                              width: double.infinity,
+                              child: TextButton.icon(
+                                onPressed: _sendPasswordResetEmail,
+                                icon: const Icon(Icons.email_outlined, color: Colors.blue),
+                                label: const Text(
+                                  'Lupa Password? Kirim Email Reset',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    side: BorderSide(color: Colors.blue.withOpacity(0.3)),
+                                  ),
+                                ),
+                              ),
+                            ),
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
                           ],
                         ),
                       ),

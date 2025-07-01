@@ -12,7 +12,24 @@
           "package_name": "com.example.diagnosis_penyakit_infeksi_jamur_kulit_app"
         }
       },
+<<<<<<< HEAD
       "oauth_client": [],
+=======
+      "oauth_client": [
+        {
+          "client_id": "485397222127-mtt9a4slscil89o6aqn9o4bguvqb9ish.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.diagnosis_penyakit_infeksi_jamur_kulit_app",
+            "certificate_hash": "ff7d3940e93c890e6a8e18f21b4f42573f7adaa1"
+          }
+        },
+        {
+          "client_id": "485397222127-lb1ffkitq4quab6edp7uffmu2q0f96gg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
       "api_key": [
         {
           "current_key": "AIzaSyCVCmv2j_TKDp4mJ1PANFko87v1xlRNaG0"
@@ -20,7 +37,16 @@
       ],
       "services": {
         "appinvite_service": {
+<<<<<<< HEAD
           "other_platform_oauth_client": []
+=======
+          "other_platform_oauth_client": [
+            {
+              "client_id": "485397222127-lb1ffkitq4quab6edp7uffmu2q0f96gg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+>>>>>>> 32ecd53 (Menambahkan fitur lupa password)
         }
       }
     }
