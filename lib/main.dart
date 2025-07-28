@@ -7,10 +7,7 @@ import 'pages/register_page.dart';
 import 'pages/diagnosis_page.dart';
 import 'pages/history_page.dart';
 import 'pages/profile_page.dart';
-<<<<<<< HEAD
-=======
 import 'pages/reset_page.dart';
->>>>>>> 32ecd53 (Menambahkan fitur lupa password)
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,10 +33,7 @@ class MyApp extends StatelessWidget {
         '/diagnosis': (context) => const DiagnosisPage(),
         '/history': (context) => const HistoryPage(),
         '/profile': (context) => const ProfilePage(),
-<<<<<<< HEAD
-=======
         '/reset': (context) => const ResetPasswordPage(),
->>>>>>> 32ecd53 (Menambahkan fitur lupa password)
       },
     );
   }

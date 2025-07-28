@@ -56,6 +56,6 @@ class DiagnosisService {
         return 'Gunakan krim antijamur seperti ketoconazole. Cuci tangan setelah menyentuh area infeksi.';
       }
     }
-    return 'Tidak ada saran khusus ditemukan untuk diagnosis ini.';
+    return 'Tidak ada saran khusus ditemukan untuk deteksi ini.';
   }
 }

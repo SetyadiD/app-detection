@@ -366,11 +366,7 @@ class _DiagnosisPageState extends State<DiagnosisPage>
                   ],
                 )
               : const Text(
-<<<<<<< HEAD
-                  'Mulai Diagnosis',
-=======
                   'Mulai Deteksi',
->>>>>>> 32ecd53 (Menambahkan fitur lupa password)
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -395,11 +391,7 @@ class _DiagnosisPageState extends State<DiagnosisPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-<<<<<<< HEAD
-                'Hasil Diagnosis',
-=======
                 'Hasil Deteksi',
->>>>>>> 32ecd53 (Menambahkan fitur lupa password)
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -588,11 +580,7 @@ class _DiagnosisPageState extends State<DiagnosisPage>
               Icon(Icons.medical_services, color: Colors.white),
               SizedBox(width: 8),
               Text(
-<<<<<<< HEAD
-                'Diagnosis Penyakit Kulit',
-=======
                 'Deteksi Penyakit Kulit',
->>>>>>> 32ecd53 (Menambahkan fitur lupa password)
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,

@@ -131,8 +131,6 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-<<<<<<< HEAD
-=======
   void _sendPasswordResetEmail() async {
     try {
       if (user?.email == null) {
@@ -291,7 +289,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
->>>>>>> 32ecd53 (Menambahkan fitur lupa password)
   void _showSnackBar(String message, Color backgroundColor) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -299,10 +296,7 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: backgroundColor,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-<<<<<<< HEAD
-=======
         duration: const Duration(seconds: 4),
->>>>>>> 32ecd53 (Menambahkan fitur lupa password)
       ),
     );
   }
@@ -724,8 +718,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               ),
                             ),
-<<<<<<< HEAD
-=======
                             
                             const SizedBox(height: 12),
                             
@@ -752,7 +744,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               ),
                             ),
->>>>>>> 32ecd53 (Menambahkan fitur lupa password)
                           ],
                         ),
                       ),

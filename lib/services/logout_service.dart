@@ -2,10 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-=======
 import 'package:google_sign_in/google_sign_in.dart';
->>>>>>> 32ecd53 (Menambahkan fitur lupa password)
 
 class LogoutService {
   static Future<void> logout(BuildContext context) async {
@@ -30,10 +27,7 @@ class LogoutService {
 
     if (shouldLogout == true) {
       await FirebaseAuth.instance.signOut();
-<<<<<<< HEAD
-=======
       await GoogleSignIn().signOut(); // Logout juga dari Google
->>>>>>> 32ecd53 (Menambahkan fitur lupa password)
       Navigator.pushReplacementNamed(context, '/home');
     }
   }

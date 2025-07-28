@@ -2,7 +2,7 @@
     <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
     <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
     <application
-        android:label="diagnosis_penyakit_infeksi_jamur_kulit_app"
+        android:label="deteksi penyakit kulit"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

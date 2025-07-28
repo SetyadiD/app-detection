@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -146,6 +146,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                             onPressed: _isLoading ? null : _resetPassword,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF2E7D32),
+                              foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                             ),
                             child: _isLoading
