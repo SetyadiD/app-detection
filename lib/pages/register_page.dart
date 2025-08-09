@@ -27,12 +27,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) return;
-    
+
     setState(() {
       _error = '';
       _isLoading = true;
     });
-    
+
     try {
       await _registerService.register(
         email: _emailController.text,
@@ -40,22 +40,87 @@ class _RegisterPageState extends State<RegisterPage> {
         name: _nameController.text,
       );
 
-      // Tampilkan pop-up sukses
+      // Tampilkan pop-up verifikasi email
       await showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (context) => AlertDialog(
-          title: const Text('Registrasi Berhasil'),
-          content: const Text('Akun Anda telah berhasil dibuat. Silakan login.'),
+          title: const Row(
+            children: [
+              Icon(Icons.email, color: Color(0xFF2E7D32)),
+              SizedBox(width: 8),
+              Text('Verifikasi Email'),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Registrasi berhasil! Email verifikasi telah dikirim ke:',
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  _emailController.text,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF2E7D32),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Silakan cek email Anda dan klik link verifikasi untuk mengaktifkan akun.',
+                style: TextStyle(fontSize: 14, color: Colors.grey),
+              ),
+            ],
+          ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
+              onPressed: () async {
+                try {
+                  await _registerService.resendVerificationEmail();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Email verifikasi telah dikirim ulang'),
+                      backgroundColor: Color(0xFF2E7D32),
+                    ),
+                  );
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Gagal mengirim ulang email verifikasi'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              },
+              child: const Text(
+                'Kirim Ulang',
+                style: TextStyle(color: Color(0xFF2E7D32)),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pushReplacementNamed(context, '/login');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF2E7D32),
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('OK, Menuju Login'),
             ),
           ],
         ),
       );
-
-    Navigator.pushReplacementNamed(context, '/login'); // Redirect to login page after successful registration
     } on FirebaseAuthException catch (e) {
       String errorMessage;
       switch (e.code) {
@@ -66,28 +131,28 @@ class _RegisterPageState extends State<RegisterPage> {
           errorMessage = 'Format email tidak valid.';
           break;
         case 'weak-password':
-          errorMessage = 'Kata sandi terlalu lemah. Gunakan minimal 6 karakter.';
+          errorMessage =
+              'Kata sandi terlalu lemah. Gunakan minimal 6 karakter.';
           break;
-    default:
+        default:
           errorMessage = 'Terjadi kesalahan: ${e.message}';
-  }
+      }
 
-  // Tampilkan error ke pengguna
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('Pendaftaran Gagal'),
-      content: Text(errorMessage),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('OK'),
+      // Tampilkan error ke pengguna
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Pendaftaran Gagal'),
+          content: Text(errorMessage),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
         ),
-      ],
-    ),
-  );
-}
-     finally {
+      );
+    } finally {
       setState(() => _isLoading = false);
     }
   }
@@ -99,10 +164,7 @@ class _RegisterPageState extends State<RegisterPage> {
       appBar: AppBar(
         title: const Text(
           'Daftar Akun',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         backgroundColor: const Color(0xFF4FACFE),
         elevation: 0,
@@ -113,10 +175,7 @@ class _RegisterPageState extends State<RegisterPage> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF4FACFE), 
-              Color(0xFF00F2FE),
-            ],
+            colors: [Color(0xFF4FACFE), Color(0xFF00F2FE)],
           ),
         ),
         child: SafeArea(
@@ -128,7 +187,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 20),
-                  
+
                   // Logo/Icon
                   Container(
                     width: 100,
@@ -151,9 +210,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       color: Color(0xFF2E7D32),
                     ),
                   ),
-                  
+
                   const SizedBox(height: 30),
-                  
+
                   // Welcome Text
                   const Text(
                     'Bergabung Dengan Kami!',
@@ -171,20 +230,17 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  
+
                   const SizedBox(height: 10),
-                  
+
                   const Text(
                     'Buat akun baru untuk menggunakan layanan deteksi penyakit kulit',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white70,
-                    ),
+                    style: TextStyle(fontSize: 16, color: Colors.white70),
                     textAlign: TextAlign.center,
                   ),
-                  
+
                   const SizedBox(height: 40),
-                  
+
                   // Register Form Card
                   Container(
                     padding: const EdgeInsets.all(24),
@@ -240,9 +296,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             fillColor: Colors.grey[50],
                           ),
                         ),
-                        
+
                         const SizedBox(height: 20),
-                        
+
                         // Email Field
                         TextFormField(
                           controller: _emailController,
@@ -251,7 +307,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             if (value == null || value.isEmpty) {
                               return 'Email tidak boleh kosong';
                             }
-                            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                            if (!RegExp(
+                              r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                            ).hasMatch(value)) {
                               return 'Format email tidak valid';
                             }
                             return null;
@@ -281,9 +339,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             fillColor: Colors.grey[50],
                           ),
                         ),
-                        
+
                         const SizedBox(height: 20),
-                        
+
                         // Password Field
                         TextFormField(
                           controller: _passwordController,
@@ -335,9 +393,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             fillColor: Colors.grey[50],
                           ),
                         ),
-                        
+
                         const SizedBox(height: 20),
-                        
+
                         // Confirm Password Field
                         TextFormField(
                           controller: _confirmPasswordController,
@@ -366,7 +424,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               onPressed: () {
                                 setState(() {
-                                  _obscureConfirmPassword = !_obscureConfirmPassword;
+                                  _obscureConfirmPassword =
+                                      !_obscureConfirmPassword;
                                 });
                               },
                             ),
@@ -389,9 +448,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             fillColor: Colors.grey[50],
                           ),
                         ),
-                        
+
                         const SizedBox(height: 30),
-                        
+
                         // Register Button
                         SizedBox(
                           width: double.infinity,
@@ -405,29 +464,33 @@ class _RegisterPageState extends State<RegisterPage> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               elevation: 3,
-                              shadowColor: const Color(0xFF2E7D32).withOpacity(0.3),
+                              shadowColor: const Color(
+                                0xFF2E7D32,
+                              ).withOpacity(0.3),
                             ),
-                            child: _isLoading
-                                ? const SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white,
+                            child:
+                                _isLoading
+                                    ? const SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                              Colors.white,
+                                            ),
+                                        strokeWidth: 2,
                                       ),
-                                      strokeWidth: 2,
+                                    )
+                                    : const Text(
+                                      'Daftar',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  )
-                                : const Text(
-                                    'Daftar',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
                           ),
                         ),
-                        
+
                         // Error Message
                         if (_error.isNotEmpty)
                           Container(
@@ -461,9 +524,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ],
                     ),
                   ),
-                  
+
                   const SizedBox(height: 30),
-                  
+
                   // Terms and Privacy Info
                   Container(
                     padding: const EdgeInsets.all(16),

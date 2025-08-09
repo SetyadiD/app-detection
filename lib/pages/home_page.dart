@@ -11,10 +11,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'Beranda',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         backgroundColor: const Color(0xFF4FACFE),
         elevation: 0,
@@ -26,7 +23,10 @@ class HomePage extends StatelessWidget {
               onPressed: () => Navigator.pushNamed(context, '/login'),
               style: TextButton.styleFrom(
                 backgroundColor: Colors.white.withOpacity(0.2),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -46,7 +46,10 @@ class HomePage extends StatelessWidget {
               onPressed: () => Navigator.pushNamed(context, '/register'),
               style: TextButton.styleFrom(
                 backgroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -81,7 +84,7 @@ class HomePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 40),
-                
+
                 // App Icon/Logo
                 Container(
                   width: 120,
@@ -104,9 +107,9 @@ class HomePage extends StatelessWidget {
                     color: Color(0xFF2E7D32),
                   ),
                 ),
-                
+
                 const SizedBox(height: 30),
-                
+
                 // Welcome Text
                 const Text(
                   'Selamat Datang!',
@@ -123,9 +126,9 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 15),
-                
+
                 // App Description
                 Container(
                   padding: const EdgeInsets.all(16),
@@ -166,9 +169,9 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // Diseases List
                 Container(
                   padding: const EdgeInsets.all(16),
@@ -208,17 +211,32 @@ class HomePage extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 15),
-                      _buildDiseaseItem('Selulitis', 'Infeksi bakteri pada lapisan dalam kulit'),
-                      _buildDiseaseItem('Impetigo', 'Infeksi kulit superfisial yang sangat menular'),
-                      _buildDiseaseItem('Nail Fungus', 'Infeksi jamur pada kuku tangan atau kaki'),
-                      _buildDiseaseItem('Athelets Foot', 'Infeksi jamur pada kaki, terutama sela jari'),
-                      _buildDiseaseItem('Ringworm', 'Infeksi jamur berbentuk cincin pada kulit'),
+                      _buildDiseaseItem(
+                        'Selulitis',
+                        'Infeksi bakteri pada lapisan dalam kulit',
+                      ),
+                      _buildDiseaseItem(
+                        'Impetigo',
+                        'Infeksi kulit superfisial yang sangat menular',
+                      ),
+                      _buildDiseaseItem(
+                        'Nail Fungus',
+                        'Infeksi jamur pada kuku tangan atau kaki',
+                      ),
+                      _buildDiseaseItem(
+                        'Athelets Foot',
+                        'Infeksi jamur pada kaki, terutama sela jari',
+                      ),
+                      _buildDiseaseItem(
+                        'Ringworm',
+                        'Infeksi jamur berbentuk cincin pada kulit',
+                      ),
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // Call to Action
                 Container(
                   width: double.infinity,
@@ -233,11 +251,7 @@ class HomePage extends StatelessWidget {
                   ),
                   child: const Column(
                     children: [
-                      Icon(
-                        Icons.info_outline,
-                        size: 30,
-                        color: Colors.white,
-                      ),
+                      Icon(Icons.info_outline, size: 30, color: Colors.white),
                       SizedBox(height: 10),
                       Text(
                         'Mulai Sekarang',
@@ -250,10 +264,7 @@ class HomePage extends StatelessWidget {
                       SizedBox(height: 5),
                       Text(
                         'Login atau daftar untuk menggunakan fitur lengkap aplikasi',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white70,
-                        ),
+                        style: TextStyle(fontSize: 14, color: Colors.white70),
                         textAlign: TextAlign.center,
                       ),
                     ],

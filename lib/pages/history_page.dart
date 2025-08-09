@@ -14,7 +14,8 @@ class HistoryPage extends StatefulWidget {
   State<HistoryPage> createState() => _HistoryPageState();
 }
 
-class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin {
+class _HistoryPageState extends State<HistoryPage>
+    with TickerProviderStateMixin {
   final user = FirebaseAuth.instance.currentUser;
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -26,13 +27,9 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
       duration: const Duration(milliseconds: 600),
       vsync: this,
     );
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
     _animationController.forward();
   }
 
@@ -68,25 +65,22 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
               const SizedBox(width: 12),
               const Text(
                 'Konfirmasi Hapus',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ],
           ),
           content: const Text(
             'Apakah Anda yakin ingin menghapus riwayat deteksi ini? Tindakan ini tidak dapat dibatalkan.',
-            style: TextStyle(
-              fontSize: 15,
-              height: 1.4,
-            ),
+            style: TextStyle(fontSize: 15, height: 1.4),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
               style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -109,7 +103,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
               child: ElevatedButton(
                 onPressed: () async {
                   Navigator.pop(context);
-                  
+
                   // Show loading snackbar
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -120,7 +114,9 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                             height: 20,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.white,
+                              ),
                             ),
                           ),
                           SizedBox(width: 12),
@@ -140,7 +136,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                         .collection('riwayat')
                         .doc(docId)
                         .delete();
-                    
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: const Row(
@@ -179,7 +175,10 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.transparent,
                   shadowColor: Colors.transparent,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -210,10 +209,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
               padding: const EdgeInsets.all(32),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    Colors.blue.shade50,
-                    Colors.indigo.shade50,
-                  ],
+                  colors: [Colors.blue.shade50, Colors.indigo.shade50],
                 ),
                 shape: BoxShape.circle,
                 boxShadow: [
@@ -335,7 +331,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
     int index,
   ) {
     final highestResult = diagnosis.isNotEmpty ? diagnosis.first : null;
-    
+
     return TweenAnimationBuilder<double>(
       duration: Duration(milliseconds: 300 + (index * 100)),
       tween: Tween(begin: 0.0, end: 1.0),
@@ -348,10 +344,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    Colors.white,
-                    Colors.blue.shade50,
-                  ],
+                  colors: [Colors.white, Colors.blue.shade50],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -363,10 +356,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                     offset: const Offset(0, 8),
                   ),
                 ],
-                border: Border.all(
-                  color: Colors.blue.shade100,
-                  width: 1,
-                ),
+                border: Border.all(color: Colors.blue.shade100, width: 1),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(20),
@@ -403,7 +393,9 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      DateFormat('dd MMMM yyyy').format(timestamp),
+                                      DateFormat(
+                                        'dd MMMM yyyy',
+                                      ).format(timestamp),
                                       style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -442,9 +434,9 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // Main diagnosis result
                     if (highestResult != null)
                       Container(
@@ -502,7 +494,10 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                               ),
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   colors: [
@@ -524,7 +519,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                           ],
                         ),
                       ),
-                    
+
                     // Other diagnosis results
                     if (diagnosis.length > 1) ...[
                       const SizedBox(height: 12),
@@ -575,7 +570,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                         );
                       }),
                     ],
-                    
+
                     // Treatment suggestion
                     if (saran.isNotEmpty) ...[
                       const SizedBox(height: 16),
@@ -583,10 +578,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
-                            colors: [
-                              Color(0xFFFFF8E1),
-                              Color(0xFFFFFDE7),
-                            ],
+                            colors: [Color(0xFFFFF8E1), Color(0xFFFFFDE7)],
                           ),
                           borderRadius: BorderRadius.circular(15),
                           border: Border.all(
@@ -675,15 +667,11 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
               ),
             ),
             elevation: 0,
-            
           ),
           body: const Center(
             child: Text(
               'Anda belum login',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
+              style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
           ),
         ),
@@ -719,11 +707,12 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
         automaticallyImplyLeading: false,
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('riwayat')
-            .where('userId', isEqualTo: user!.uid)
-            .orderBy('timestamp', descending: true)
-            .snapshots(),
+        stream:
+            FirebaseFirestore.instance
+                .collection('riwayat')
+                .where('userId', isEqualTo: user!.uid)
+                .orderBy('timestamp', descending: true)
+                .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return _buildErrorState();

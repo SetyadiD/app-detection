@@ -34,20 +34,15 @@ class _DiagnosisPageState extends State<DiagnosisPage>
       duration: const Duration(milliseconds: 800),
       vsync: this,
     );
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 0.3),
       end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOutCubic,
-    ));
+    ).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
+    );
   }
 
   @override
@@ -64,7 +59,7 @@ class _DiagnosisPageState extends State<DiagnosisPage>
         _results = [];
       });
       _animationController.reset();
-      
+
       // Show success snackbar
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -72,12 +67,16 @@ class _DiagnosisPageState extends State<DiagnosisPage>
             children: [
               const Icon(Icons.check_circle, color: Colors.white),
               const SizedBox(width: 8),
-              Text('Gambar berhasil dipilih dari ${source == ImageSource.camera ? 'kamera' : 'galeri'}'),
+              Text(
+                'Gambar berhasil dipilih dari ${source == ImageSource.camera ? 'kamera' : 'galeri'}',
+              ),
             ],
           ),
           backgroundColor: Colors.green,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
       );
     }
@@ -96,7 +95,9 @@ class _DiagnosisPageState extends State<DiagnosisPage>
           ),
           backgroundColor: Colors.orange,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
       );
       return;
@@ -131,7 +132,9 @@ class _DiagnosisPageState extends State<DiagnosisPage>
           ),
           backgroundColor: Colors.red,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
       );
     }
@@ -146,10 +149,10 @@ class _DiagnosisPageState extends State<DiagnosisPage>
     await FirebaseFirestore.instance.collection('riwayat').add({
       'userId': user.uid,
       'timestamp': now.toIso8601String(),
-      'diagnosis': results.map((r) => {
-        'name': r['name'],
-        'confidence': r['value'],
-      }).toList(),
+      'diagnosis':
+          results
+              .map((r) => {'name': r['name'], 'confidence': r['value']})
+              .toList(),
       'saran': suggestion,
     });
   }
@@ -161,16 +164,14 @@ class _DiagnosisPageState extends State<DiagnosisPage>
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        gradient: _image != null
-            ? null
-            : LinearGradient(
-                colors: [
-                  Colors.blue.shade50,
-                  Colors.indigo.shade50,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+        gradient:
+            _image != null
+                ? null
+                : LinearGradient(
+                  colors: [Colors.blue.shade50, Colors.indigo.shade50],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
         border: Border.all(
           color: _image != null ? Colors.blue.shade300 : Colors.grey.shade300,
           width: 2,
@@ -183,43 +184,41 @@ class _DiagnosisPageState extends State<DiagnosisPage>
           ),
         ],
       ),
-      child: _image != null
-          ? ClipRRect(
-              borderRadius: BorderRadius.circular(18),
-              child: Image.file(
-                _image!,
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
+      child:
+          _image != null
+              ? ClipRRect(
+                borderRadius: BorderRadius.circular(18),
+                child: Image.file(
+                  _image!,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
+              )
+              : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.image_outlined,
+                    size: 64,
+                    color: Colors.grey.shade400,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Belum ada gambar dipilih',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Pilih foto dari kamera atau galeri',
+                    style: TextStyle(fontSize: 14, color: Colors.grey.shade500),
+                  ),
+                ],
               ),
-            )
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.image_outlined,
-                  size: 64,
-                  color: Colors.grey.shade400,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'Belum ada gambar dipilih',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey.shade600,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Pilih foto dari kamera atau galeri',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade500,
-                  ),
-                ),
-              ],
-            ),
     );
   }
 
@@ -342,37 +341,40 @@ class _DiagnosisPageState extends State<DiagnosisPage>
               borderRadius: BorderRadius.circular(30),
             ),
           ),
-          child: _isLoading
-              ? const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          child:
+              _isLoading
+                  ? const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.white,
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 16),
-                    Text(
-                      'Menganalisis...',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
+                      SizedBox(width: 16),
+                      Text(
+                        'Menganalisis...',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
+                    ],
+                  )
+                  : const Text(
+                    'Mulai Deteksi',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
                     ),
-                  ],
-                )
-              : const Text(
-                  'Mulai Deteksi',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
                   ),
-                ),
         ),
       ),
     );
@@ -403,7 +405,7 @@ class _DiagnosisPageState extends State<DiagnosisPage>
                 final index = entry.key;
                 final result = entry.value;
                 final confidence = (result['value'] * 100);
-                
+
                 return TweenAnimationBuilder<double>(
                   duration: Duration(milliseconds: 800 + (index * 200)),
                   tween: Tween(begin: 0.0, end: 1.0),
@@ -419,7 +421,10 @@ class _DiagnosisPageState extends State<DiagnosisPage>
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(
-                              color: index == 0 ? Colors.blue.shade300 : Colors.grey.shade200,
+                              color:
+                                  index == 0
+                                      ? Colors.blue.shade300
+                                      : Colors.grey.shade200,
                               width: index == 0 ? 2 : 1,
                             ),
                             boxShadow: [
@@ -441,12 +446,17 @@ class _DiagnosisPageState extends State<DiagnosisPage>
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
-                                        color: index == 0 ? Colors.blue.shade700 : Colors.grey.shade700,
+                                        color:
+                                            index == 0
+                                                ? Colors.blue.shade700
+                                                : Colors.grey.shade700,
                                       ),
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      index == 0 ? 'Kemungkinan tertinggi' : 'Kemungkinan lain',
+                                      index == 0
+                                          ? 'Kemungkinan tertinggi'
+                                          : 'Kemungkinan lain',
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Colors.grey.shade500,
@@ -456,12 +466,22 @@ class _DiagnosisPageState extends State<DiagnosisPage>
                                 ),
                               ),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
-                                    colors: index == 0
-                                        ? [const Color(0xFF4FACFE), const Color(0xFF00F2FE)]
-                                        : [Colors.grey.shade400, Colors.grey.shade500],
+                                    colors:
+                                        index == 0
+                                            ? [
+                                              const Color(0xFF4FACFE),
+                                              const Color(0xFF00F2FE),
+                                            ]
+                                            : [
+                                              Colors.grey.shade400,
+                                              Colors.grey.shade500,
+                                            ],
                                   ),
                                   borderRadius: BorderRadius.circular(20),
                                 ),
@@ -490,9 +510,10 @@ class _DiagnosisPageState extends State<DiagnosisPage>
   }
 
   Widget _buildSuggestionCard() {
-    final saran = _results.isNotEmpty
-        ? diagnosisService.getTreatmentSuggestion(_results)
-        : null;
+    final saran =
+        _results.isNotEmpty
+            ? diagnosisService.getTreatmentSuggestion(_results)
+            : null;
 
     if (saran == null) return const SizedBox.shrink();
 

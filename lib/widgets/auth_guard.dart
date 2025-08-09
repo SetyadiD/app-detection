@@ -17,9 +17,7 @@ class AuthGuard extends StatelessWidget {
       Future.microtask(() {
         Navigator.pushReplacementNamed(context, '/login');
       });
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return child;

@@ -19,7 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late TextEditingController _currentPasswordController;
   late TextEditingController _newPasswordController;
   late TextEditingController _confirmPasswordController;
-  
+
   bool _isPasswordVisible = false;
   bool _isNewPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
@@ -54,7 +54,9 @@ class _ProfilePageState extends State<ProfilePage> {
             content: const Text('Nama berhasil diperbarui'),
             backgroundColor: Colors.green,
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         );
       } catch (e) {
@@ -63,7 +65,9 @@ class _ProfilePageState extends State<ProfilePage> {
             content: Text('Gagal memperbarui nama: $e'),
             backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         );
       }
@@ -76,13 +80,18 @@ class _ProfilePageState extends State<ProfilePage> {
     final confirmPassword = _confirmPasswordController.text.trim();
 
     // Validasi input
-    if (currentPassword.isEmpty || newPassword.isEmpty || confirmPassword.isEmpty) {
+    if (currentPassword.isEmpty ||
+        newPassword.isEmpty ||
+        confirmPassword.isEmpty) {
       _showSnackBar('Semua field password harus diisi', Colors.orange);
       return;
     }
 
     if (newPassword != confirmPassword) {
-      _showSnackBar('Password baru dan konfirmasi password tidak cocok', Colors.red);
+      _showSnackBar(
+        'Password baru dan konfirmasi password tidak cocok',
+        Colors.red,
+      );
       return;
     }
 
@@ -97,19 +106,18 @@ class _ProfilePageState extends State<ProfilePage> {
         email: user!.email!,
         password: currentPassword,
       );
-      
+
       await user!.reauthenticateWithCredential(credential);
-      
+
       // Update password
       await user!.updatePassword(newPassword);
-      
+
       // Clear controllers
       _currentPasswordController.clear();
       _newPasswordController.clear();
       _confirmPasswordController.clear();
-      
+
       _showSnackBar('Password berhasil diubah', Colors.green);
-      
     } on FirebaseAuthException catch (e) {
       String errorMessage;
       switch (e.code) {
@@ -140,15 +148,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
       // Kirim email reset password
       await FirebaseAuth.instance.sendPasswordResetEmail(email: user!.email!);
-      
+
       _showSnackBar(
         'Email reset password telah dikirim ke ${user!.email}. Silakan cek inbox atau spam folder Anda.',
         Colors.green,
       );
-      
+
       // Tampilkan dialog konfirmasi
       _showPasswordResetDialog();
-      
     } on FirebaseAuthException catch (e) {
       String errorMessage;
       switch (e.code) {
@@ -195,10 +202,7 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(width: 12),
               const Text(
                 'Email Terkirim',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -208,10 +212,7 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Text(
                 'Email reset password telah dikirim ke:',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[600],
-                ),
+                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
               ),
               const SizedBox(height: 8),
               Container(
@@ -233,10 +234,7 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 16),
               Text(
                 'Silakan cek inbox atau spam folder email Anda dan ikuti petunjuk untuk mereset password.',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[700],
-                ),
+                style: TextStyle(fontSize: 14, color: Colors.grey[700]),
               ),
               const SizedBox(height: 12),
               Container(
@@ -315,10 +313,7 @@ class _ProfilePageState extends State<ProfilePage> {
         appBar: AppBar(
           title: const Text(
             'Profil Pengguna',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            ),
+            style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
           ),
           backgroundColor: const Color(0xFF2196F3),
           elevation: 0,
@@ -388,7 +383,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-              
+
               // Content Section
               Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -412,7 +407,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFF2196F3).withOpacity(0.1),
+                                    color: const Color(
+                                      0xFF2196F3,
+                                    ).withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: const Icon(
@@ -433,7 +430,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ],
                             ),
                             const SizedBox(height: 20),
-                            
+
                             // Name Info
                             Container(
                               padding: const EdgeInsets.all(16),
@@ -459,7 +456,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         const Text(
                                           'Nama',
@@ -470,7 +468,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                           ),
                                         ),
                                         Text(
-                                          user!.displayName ?? 'Nama belum diatur',
+                                          user!.displayName ??
+                                              'Nama belum diatur',
                                           style: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600,
@@ -483,9 +482,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ],
                               ),
                             ),
-                            
+
                             const SizedBox(height: 12),
-                            
+
                             // Email Info
                             Container(
                               padding: const EdgeInsets.all(16),
@@ -511,7 +510,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         const Text(
                                           'Email',
@@ -539,9 +539,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    
+
                     const SizedBox(height: 20),
-                    
+
                     // Change Password Card
                     Card(
                       elevation: 8,
@@ -580,7 +580,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ],
                             ),
                             const SizedBox(height: 20),
-                            
+
                             // Current Password Field
                             TextField(
                               controller: _currentPasswordController,
@@ -591,7 +591,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 prefixIcon: const Icon(Icons.lock_outline),
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                                    _isPasswordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -601,23 +603,30 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(color: Colors.grey[300]!),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey[300]!,
+                                  ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: const BorderSide(color: Colors.purple, width: 2),
+                                  borderSide: const BorderSide(
+                                    color: Colors.purple,
+                                    width: 2,
+                                  ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(color: Colors.grey[300]!),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey[300]!,
+                                  ),
                                 ),
                                 filled: true,
                                 fillColor: Colors.grey[50],
                               ),
                             ),
-                            
+
                             const SizedBox(height: 16),
-                            
+
                             // New Password Field
                             TextField(
                               controller: _newPasswordController,
@@ -628,25 +637,35 @@ class _ProfilePageState extends State<ProfilePage> {
                                 prefixIcon: const Icon(Icons.lock_outline),
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    _isNewPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                                    _isNewPasswordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
                                   ),
                                   onPressed: () {
                                     setState(() {
-                                      _isNewPasswordVisible = !_isNewPasswordVisible;
+                                      _isNewPasswordVisible =
+                                          !_isNewPasswordVisible;
                                     });
                                   },
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(color: Colors.grey[300]!),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey[300]!,
+                                  ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: const BorderSide(color: Colors.purple, width: 2),
+                                  borderSide: const BorderSide(
+                                    color: Colors.purple,
+                                    width: 2,
+                                  ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(color: Colors.grey[300]!),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey[300]!,
+                                  ),
                                 ),
                                 filled: true,
                                 fillColor: Colors.grey[50],
@@ -654,9 +673,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 helperStyle: TextStyle(color: Colors.grey[600]),
                               ),
                             ),
-                            
+
                             const SizedBox(height: 16),
-                            
+
                             // Confirm Password Field
                             TextField(
                               controller: _confirmPasswordController,
@@ -667,39 +686,52 @@ class _ProfilePageState extends State<ProfilePage> {
                                 prefixIcon: const Icon(Icons.lock_outline),
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    _isConfirmPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                                    _isConfirmPasswordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
                                   ),
                                   onPressed: () {
                                     setState(() {
-                                      _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                                      _isConfirmPasswordVisible =
+                                          !_isConfirmPasswordVisible;
                                     });
                                   },
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(color: Colors.grey[300]!),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey[300]!,
+                                  ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: const BorderSide(color: Colors.purple, width: 2),
+                                  borderSide: const BorderSide(
+                                    color: Colors.purple,
+                                    width: 2,
+                                  ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(color: Colors.grey[300]!),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey[300]!,
+                                  ),
                                 ),
                                 filled: true,
                                 fillColor: Colors.grey[50],
                               ),
                             ),
-                            
+
                             const SizedBox(height: 20),
-                            
+
                             // Change Password Button
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton.icon(
                                 onPressed: _changePassword,
-                                icon: const Icon(Icons.security, color: Colors.white),
+                                icon: const Icon(
+                                  Icons.security,
+                                  color: Colors.white,
+                                ),
                                 label: const Text(
                                   'Ubah Password',
                                   style: TextStyle(
@@ -710,7 +742,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.purple,
-                                  padding: const EdgeInsets.symmetric(vertical: 16),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 16,
+                                  ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
@@ -718,15 +752,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               ),
                             ),
-                            
+
                             const SizedBox(height: 12),
-                            
+
                             // Forgot Password Button
                             SizedBox(
                               width: double.infinity,
                               child: TextButton.icon(
                                 onPressed: _sendPasswordResetEmail,
-                                icon: const Icon(Icons.email_outlined, color: Colors.blue),
+                                icon: const Icon(
+                                  Icons.email_outlined,
+                                  color: Colors.blue,
+                                ),
                                 label: const Text(
                                   'Lupa Password? Kirim Email Reset',
                                   style: TextStyle(
@@ -736,10 +773,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                  ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    side: BorderSide(color: Colors.blue.withOpacity(0.3)),
+                                    side: BorderSide(
+                                      color: Colors.blue.withOpacity(0.3),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -748,7 +789,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    
+
                     // Edit Name Card
                     Card(
                       elevation: 8,
@@ -787,7 +828,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ],
                             ),
                             const SizedBox(height: 20),
-                            
+
                             // Name Input Field
                             TextField(
                               controller: _nameController,
@@ -797,29 +838,39 @@ class _ProfilePageState extends State<ProfilePage> {
                                 prefixIcon: const Icon(Icons.person_outline),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(color: Colors.grey[300]!),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey[300]!,
+                                  ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: const BorderSide(color: Color(0xFF2196F3), width: 2),
+                                  borderSide: const BorderSide(
+                                    color: Color(0xFF2196F3),
+                                    width: 2,
+                                  ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(color: Colors.grey[300]!),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey[300]!,
+                                  ),
                                 ),
                                 filled: true,
                                 fillColor: Colors.grey[50],
                               ),
                             ),
-                            
+
                             const SizedBox(height: 16),
-                            
+
                             // Save Button
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton.icon(
                                 onPressed: _updateName,
-                                icon: const Icon(Icons.save, color: Colors.white),
+                                icon: const Icon(
+                                  Icons.save,
+                                  color: Colors.white,
+                                ),
                                 label: const Text(
                                   'Simpan Nama',
                                   style: TextStyle(
@@ -830,7 +881,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF4CAF50),
-                                  padding: const EdgeInsets.symmetric(vertical: 16),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 16,
+                                  ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
@@ -842,9 +895,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    
+
                     const SizedBox(height: 20),
-                    
+
                     // Logout Button
                     SizedBox(
                       width: double.infinity,
@@ -869,7 +922,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    
+
                     const SizedBox(height: 20),
                   ],
                 ),

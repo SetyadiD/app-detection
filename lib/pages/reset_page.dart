@@ -27,19 +27,25 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
       showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Berhasil'),
-          content: const Text('Jika email tersebut terdaftar, link reset password telah dikirim.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.pop(context, '/login'); // Kembali ke halaman login
-              },
-              child: const Text('OK'),
+        builder:
+            (context) => AlertDialog(
+              title: const Text('Berhasil'),
+              content: const Text(
+                'Jika email tersebut terdaftar, link reset password telah dikirim.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.pop(
+                      context,
+                      '/login',
+                    ); // Kembali ke halaman login
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
             ),
-          ],
-        ),
       );
     } on FirebaseAuthException catch (e) {
       String message;
@@ -56,16 +62,17 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
       showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Gagal'),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
+        builder:
+            (context) => AlertDialog(
+              title: const Text('Gagal'),
+              content: Text(message),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('OK'),
+                ),
+              ],
             ),
-          ],
-        ),
       );
     } finally {
       setState(() => _isLoading = false);
@@ -77,7 +84,10 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        title: const Text('Lupa Password', style: TextStyle(color: Colors.white)),
+        title: const Text(
+          'Lupa Password',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: const Color(0xFF4FACFE),
         elevation: 0,
       ),
@@ -126,14 +136,23 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
-                            if (value == null || value.isEmpty) return 'Email tidak boleh kosong';
-                            if (!value.contains('@')) return 'Email tidak valid';
+                            if (value == null || value.isEmpty) {
+                              return 'Email tidak boleh kosong';
+                            }
+                            if (!value.contains('@')) {
+                              return 'Email tidak valid';
+                            }
                             return null;
                           },
                           decoration: InputDecoration(
                             labelText: 'Email',
-                            prefixIcon: const Icon(Icons.email_outlined, color: Color(0xFF2E7D32)),
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                            prefixIcon: const Icon(
+                              Icons.email_outlined,
+                              color: Color(0xFF2E7D32),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                             filled: true,
                             fillColor: Colors.grey[50],
                           ),
@@ -147,11 +166,20 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF2E7D32),
                               foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                             ),
-                            child: _isLoading
-                                ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
-                                : const Text('Kirim Email Reset', style: TextStyle(fontSize: 18)),
+                            child:
+                                _isLoading
+                                    ? const CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    )
+                                    : const Text(
+                                      'Kirim Email Reset',
+                                      style: TextStyle(fontSize: 18),
+                                    ),
                           ),
                         ),
                       ],

@@ -14,21 +14,22 @@ class DiagnosisService {
     final base64Image = base64Encode(bytes);
 
     final response = await http.post(
-      Uri.parse('https://api.clarifai.com/v2/models/$modelId/versions/$modelVersionId/outputs'),
+      Uri.parse(
+        'https://api.clarifai.com/v2/models/$modelId/versions/$modelVersionId/outputs',
+      ),
       headers: {
         'Authorization': 'Key $apiKey',
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        'user_app_id': {
-          'user_id': userId,
-          'app_id': appId,
-        },
+        'user_app_id': {'user_id': userId, 'app_id': appId},
         'inputs': [
           {
-            'data': {'image': {'base64': base64Image}}
-          }
-        ]
+            'data': {
+              'image': {'base64': base64Image},
+            },
+          },
+        ],
       }),
     );
 
@@ -37,10 +38,11 @@ class DiagnosisService {
       final results = jsonResponse['outputs'][0]['data']['concepts'];
       return results;
     } else {
-      throw Exception('Gagal mendiagnosis gambar: ${response.body}');
+      throw Exception('Gagal mendeteksi gambar: ${response.body}');
     }
   }
-   /// Berikan saran pengobatan berdasarkan hasil diagnosis
+
+  /// Berikan saran pengobatan berdasarkan hasil diagnosis
   String getTreatmentSuggestion(List<dynamic> results) {
     for (var result in results) {
       final name = result['name'].toString().toLowerCase();

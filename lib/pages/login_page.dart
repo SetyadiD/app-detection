@@ -36,7 +36,11 @@ class _LoginPageState extends State<LoginPage> {
 
       Navigator.pushReplacementNamed(context, '/diagnosis');
     } on FirebaseAuthException catch (e) {
-      _showErrorDialog('Login Gagal', _getReadableErrorMessage(e.code));
+      if (e.code == 'email-not-verified') {
+        _showEmailVerificationDialog(_emailController.text, _passwordController.text);
+      } else {
+        _showErrorDialog('Login Gagal', _getReadableErrorMessage(e.code));
+      }
     } catch (e) {
       _showErrorDialog('Kesalahan', 'Terjadi kesalahan saat login.');
     } finally {
@@ -65,16 +69,17 @@ class _LoginPageState extends State<LoginPage> {
   void _showErrorDialog(String title, String message) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+      builder:
+          (context) => AlertDialog(
+            title: Text(title),
+            content: Text(message),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 
@@ -88,9 +93,107 @@ class _LoginPageState extends State<LoginPage> {
         return 'Email tidak valid.';
       case 'user-disabled':
         return 'Akun dinonaktifkan.';
+      case 'email-not-verified':
+        return 'Email belum diverifikasi.';
       default:
         return 'Login gagal. Silakan coba lagi.';
     }
+  }
+
+  void _showEmailVerificationDialog(String email, String password) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+        actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
+        title: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.warning, color: Colors.orange, size: 24),
+            SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                'Email Belum Diverifikasi',
+                style: TextStyle(fontSize: 18),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Email Anda belum diverifikasi. Silakan cek email dan klik link verifikasi untuk mengaktifkan akun.',
+                style: TextStyle(fontSize: 14),
+              ),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  email,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF2E7D32),
+                    fontSize: 13,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Belum menerima email verifikasi?',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
+              'Batal',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              try {
+                await _loginService.resendVerificationEmail(email, password);
+                _showErrorDialog(
+                  'Email Terkirim',
+                  'Email verifikasi telah dikirim ulang ke $email',
+                );
+              } catch (e) {
+                _showErrorDialog(
+                  'Gagal Kirim Email',
+                  'Gagal mengirim ulang email verifikasi. Silakan coba lagi.',
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF2E7D32),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            ),
+            child: const Text(
+              'Kirim Ulang',
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -98,10 +201,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        title: const Text(
-          'Masuk',
-          style: TextStyle(color: Colors.white),
-        ),
+        title: const Text('Masuk', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF4FACFE),
         elevation: 0,
         automaticallyImplyLeading: false,
@@ -136,7 +236,11 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ],
                     ),
-                    child: const Icon(Icons.person, size: 50, color: Color(0xFF2E7D32)),
+                    child: const Icon(
+                      Icons.person,
+                      size: 50,
+                      color: Color(0xFF2E7D32),
+                    ),
                   ),
                   const SizedBox(height: 30),
                   const Text(
@@ -174,14 +278,23 @@ class _LoginPageState extends State<LoginPage> {
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
-                            if (value == null || value.isEmpty) return 'Email tidak boleh kosong';
-                            if (!value.contains('@')) return 'Email tidak valid';
+                            if (value == null || value.isEmpty) {
+                              return 'Email tidak boleh kosong';
+                            }
+                            if (!value.contains('@')) {
+                              return 'Email tidak valid';
+                            }
                             return null;
                           },
                           decoration: InputDecoration(
                             labelText: 'Email',
-                            prefixIcon: const Icon(Icons.email_outlined, color: Color(0xFF2E7D32)),
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                            prefixIcon: const Icon(
+                              Icons.email_outlined,
+                              color: Color(0xFF2E7D32),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                             filled: true,
                             fillColor: Colors.grey[50],
                           ),
@@ -191,21 +304,35 @@ class _LoginPageState extends State<LoginPage> {
                           controller: _passwordController,
                           obscureText: _obscurePassword,
                           validator: (value) {
-                            if (value == null || value.isEmpty) return 'Password tidak boleh kosong';
-                            if (value.length < 6) return 'Password minimal 6 karakter';
+                            if (value == null || value.isEmpty) {
+                              return 'Password tidak boleh kosong';
+                            }
+                            if (value.length < 6) {
+                              return 'Password minimal 6 karakter';
+                            }
                             return null;
                           },
                           decoration: InputDecoration(
                             labelText: 'Password',
-                            prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFF2E7D32)),
+                            prefixIcon: const Icon(
+                              Icons.lock_outline,
+                              color: Color(0xFF2E7D32),
+                            ),
                             suffixIcon: IconButton(
                               icon: Icon(
-                                _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                                _obscurePassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 color: Color(0xFF2E7D32),
                               ),
-                              onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                              onPressed:
+                                  () => setState(
+                                    () => _obscurePassword = !_obscurePassword,
+                                  ),
                             ),
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                             filled: true,
                             fillColor: Colors.grey[50],
                           ),
@@ -214,14 +341,14 @@ class _LoginPageState extends State<LoginPage> {
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {
-                            // Arahkan ke halaman reset password (buat halaman ini jika belum)
-                            Navigator.pushNamed(context, '/reset');
+                              // Arahkan ke halaman reset password (buat halaman ini jika belum)
+                              Navigator.pushNamed(context, '/reset');
                             },
-                              child: const Text(
+                            child: const Text(
                               'Lupa Password?',
                               style: TextStyle(
-                              color: Color(0xFF2E7D32),
-                              fontWeight: FontWeight.w600,
+                                color: Color(0xFF2E7D32),
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
@@ -235,11 +362,20 @@ class _LoginPageState extends State<LoginPage> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF2E7D32),
                               foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                             ),
-                            child: _isLoading
-                                ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
-                                : const Text('Masuk', style: TextStyle(fontSize: 18)),
+                            child:
+                                _isLoading
+                                    ? const CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    )
+                                    : const Text(
+                                      'Masuk',
+                                      style: TextStyle(fontSize: 18),
+                                    ),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -249,13 +385,18 @@ class _LoginPageState extends State<LoginPage> {
                           width: double.infinity,
                           height: 50,
                           child: OutlinedButton.icon(
-                            icon: Image.asset('assets/google-logo.png', height: 24),
+                            icon: Image.asset(
+                              'assets/google-logo.png',
+                              height: 24,
+                            ),
                             label: const Text('Masuk dengan Google'),
                             onPressed: _isLoading ? null : _loginWithGoogle,
                             style: OutlinedButton.styleFrom(
                               backgroundColor: Colors.white,
                               side: const BorderSide(color: Colors.grey),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                             ),
                           ),
                         ),
@@ -271,9 +412,17 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             child: Row(
                               children: [
-                                Icon(Icons.error_outline, color: Colors.red[700]),
+                                Icon(
+                                  Icons.error_outline,
+                                  color: Colors.red[700],
+                                ),
                                 const SizedBox(width: 8),
-                                Expanded(child: Text(_error, style: TextStyle(color: Colors.red[700]))),
+                                Expanded(
+                                  child: Text(
+                                    _error,
+                                    style: TextStyle(color: Colors.red[700]),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -294,7 +443,10 @@ class _LoginPageState extends State<LoginPage> {
                         Expanded(
                           child: Text(
                             'Pastikan Anda menggunakan email dan password yang benar',
-                            style: TextStyle(fontSize: 13, color: Color(0xFF666666)),
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Color(0xFF666666),
+                            ),
                           ),
                         ),
                       ],

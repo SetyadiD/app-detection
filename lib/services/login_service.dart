@@ -8,10 +8,22 @@ class LoginService {
 
   Future<UserCredential> loginWithEmail(String email, String password) async {
     try {
-      return await _auth.signInWithEmailAndPassword(
+      final credential = await _auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password,
       );
+      
+      // Check if email is verified
+      if (!credential.user!.emailVerified) {
+        // Sign out the user if email is not verified
+        await _auth.signOut();
+        throw FirebaseAuthException(
+          code: 'email-not-verified',
+          message: 'Email belum diverifikasi. Silakan cek email Anda dan klik link verifikasi.',
+        );
+      }
+      
+      return credential;
     } on FirebaseAuthException catch (e) {
       rethrow;
     } catch (e) {
@@ -48,6 +60,26 @@ class LoginService {
       rethrow;
     } catch (e) {
       throw Exception('Login dengan Google gagal: ${e.toString()}');
+    }
+  }
+
+  // Method to resend verification email during login process
+  Future<void> resendVerificationEmail(String email, String password) async {
+    try {
+      // Sign in temporarily to send verification email
+      final credential = await _auth.signInWithEmailAndPassword(
+        email: email.trim(),
+        password: password,
+      );
+      
+      if (!credential.user!.emailVerified) {
+        await credential.user!.sendEmailVerification();
+      }
+      
+      // Sign out after sending verification email
+      await _auth.signOut();
+    } catch (e) {
+      throw Exception('Gagal mengirim ulang email verifikasi');
     }
   }
 }

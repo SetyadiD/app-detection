@@ -3,13 +3,17 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
-import'firebase_options.dart';
-import'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 
+/// Function helper untuk menginisialisasi Firebase
+/// 
+/// Function ini menyederhanakan proses inisialisasi Firebase
+/// dengan secara otomatis memilih konfigurasi platform yang sesuai
+/// 
+/// Returns [Future<void>] yang menunggu hingga Firebase terinisialisasi
 Future<void> initializeFirebase() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
@@ -23,11 +27,29 @@ Future<void> initializeFirebase() async {
 /// );
 /// ```
 
+/// Kelas yang berisi konfigurasi Firebase untuk berbagai platform
+/// 
+/// Kelas ini menyediakan konfigurasi Firebase yang berbeda untuk setiap platform
+/// (Web, Android, Windows) dan secara otomatis memilih konfigurasi yang sesuai
+/// berdasarkan platform yang sedang berjalan
 class DefaultFirebaseOptions {
+  /// Getter yang mengembalikan konfigurasi Firebase sesuai platform saat ini
+  /// 
+  /// Method ini secara otomatis mendeteksi platform yang sedang berjalan:
+  /// - Web: menggunakan konfigurasi web
+  /// - Android: menggunakan konfigurasi android  
+  /// - Windows: menggunakan konfigurasi windows
+  /// - iOS, macOS, Linux: belum dikonfigurasi (akan throw error)
+  /// 
+  /// Returns [FirebaseOptions] konfigurasi yang sesuai dengan platform
+  /// Throws [UnsupportedError] jika platform belum dikonfigurasi
   static FirebaseOptions get currentPlatform {
+    // Cek apakah berjalan di web browser
     if (kIsWeb) {
       return web;
     }
+    
+    // Switch berdasarkan platform target
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
@@ -55,6 +77,15 @@ class DefaultFirebaseOptions {
     }
   }
 
+  /// Konfigurasi Firebase untuk platform Web
+  /// 
+  /// Berisi kredensial dan pengaturan khusus untuk aplikasi web:
+  /// - API Key untuk autentikasi web
+  /// - App ID unik untuk aplikasi web
+  /// - Project ID yang sama untuk semua platform
+  /// - Auth domain untuk autentikasi
+  /// - Storage bucket untuk penyimpanan file
+  /// - Measurement ID untuk Google Analytics
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyBH69otI7Rhh6VfAVaZYrOw_tAWOVMX8MY',
     appId: '1:485397222127:web:ab21c6baf4e18a6bb6811a',
@@ -65,6 +96,12 @@ class DefaultFirebaseOptions {
     measurementId: 'G-6TKFPKGFRF',
   );
 
+  /// Konfigurasi Firebase untuk platform Android
+  /// 
+  /// Berisi kredensial dan pengaturan khusus untuk aplikasi Android:
+  /// - API Key yang berbeda dari web untuk keamanan
+  /// - App ID unik untuk aplikasi Android
+  /// - Menggunakan project dan storage yang sama
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCVCmv2j_TKDp4mJ1PANFko87v1xlRNaG0',
     appId: '1:485397222127:android:9ac49708a8d53f62b6811a',
@@ -73,6 +110,12 @@ class DefaultFirebaseOptions {
     storageBucket: 'my-app-skin-disease-diagnose.firebasestorage.app',
   );
 
+  /// Konfigurasi Firebase untuk platform Windows
+  /// 
+  /// Berisi kredensial dan pengaturan khusus untuk aplikasi Windows desktop:
+  /// - Menggunakan API Key yang sama dengan web
+  /// - App ID unik untuk aplikasi Windows
+  /// - Measurement ID untuk analytics desktop
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyBH69otI7Rhh6VfAVaZYrOw_tAWOVMX8MY',
     appId: '1:485397222127:web:d388904deb0e5624b6811a',
